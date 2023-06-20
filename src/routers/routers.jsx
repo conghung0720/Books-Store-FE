@@ -5,6 +5,13 @@ import {
 } from "react-router-dom";
 import Home from "../pages/Home/Home";
 import FlashSale from "../pages/FlashSale/FlashSale";
+import Search from "../pages/Search/Search";
+import AllCategory from "../pages/All-Category/AllCategory";
+import Details from "../pages/Details/Details";
+import Login from "../pages/Login/Login";
+import Register from "../pages/Register/Register";
+import ChatBox from "../pages/Chat-GPT/Chat";
+import Carts from "../pages/Carts/Carts";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +21,34 @@ const router = createBrowserRouter([
   {
     path: "/flashsale",
     element: <FlashSale />,
+  },
+  {
+    path: "/search",
+    element: <Search />,
+  },
+  {
+    path: "/all-category",
+    element: <AllCategory />,
+  },
+  {
+    path: "/details/:idBook",
+    element: <Details />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
+  },
+  {
+    path: "/chat",
+    element: <ChatBox />,
+  },
+  {
+    path: "/cart",
+    element: <Carts />,
   },
 ]);
 
