@@ -12,6 +12,11 @@ import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import ChatBox from "../pages/Chat-GPT/Chat";
 import Carts from "../pages/Carts/Carts";
+import OneStepCheckOut from "../pages/OneStepCheckOut/OneStepCheckOut";
+import UserProfile from "../pages/Info/Info";
+import HistoryOrders from "../pages/HistoryOrders/HistoryOrders";
+import IdHistoryOrders from "../pages/HistoryOrders/IdHistoryOrder";
+import ListBooks from "../pages/ListBooks/ListBooks";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +55,26 @@ const router = createBrowserRouter([
     path: "/cart",
     element: <Carts />,
   },
+  {
+    path: "/onestepcheckout",
+    element: <OneStepCheckOut />,
+  },
+  {
+    path: "/info",
+    element: <UserProfile />,
+  },
+  {
+    path: "/history-orders",
+    element: <HistoryOrders />,
+  },
+  {
+    path: "/history-orders/:id",
+    element: <IdHistoryOrders />,
+  },
+  {
+    path: "/listbooks",
+    element: <ListBooks/>
+  }
 ]);
 
 export default router;

@@ -1,15 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const DropdownMenuDemo = (props) => {
   const [bookmarksChecked, setBookmarksChecked] = React.useState(true);
   const [urlsChecked, setUrlsChecked] = React.useState(false);
   const [person, setPerson] = React.useState("pedro");
   const profile = useSelector((state) => state.profile);
-  console.log(profile);
+
+  const Logout = () => {
+    localStorage.removeItem("jwt");
+    localStorage.removeItem("idCart");
+    window.location.href = "/login";
+  };
 
   return (
     <DropdownMenu.Root>
@@ -42,20 +48,30 @@ const DropdownMenuDemo = (props) => {
           <DropdownMenu.Separator className="h-[1px] bg-violet6 m-[5px]" />
 
           <DropdownMenu.Label className="pl-[25px] text-xs leading-[25px] text-mauve11">
-            People
+            Cài đặt
           </DropdownMenu.Label>
           <DropdownMenu.RadioGroup value={person} onValueChange={setPerson}>
+            <Link to="/info">
+              <DropdownMenu.RadioItem
+                className="text-[13px] leading-none text-violet11 rounded-[3px] flex items-center h-[25px] px-[5px] relative pl-[25px] select-none outline-none data-[disabled]:text-mauve8 data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 cursor-pointer"
+                value="pedro"
+              >
+                Thông tin
+              </DropdownMenu.RadioItem>
+            </Link>
+            <Link to="/history-orders">
+              <DropdownMenu.RadioItem
+                className="text-[13px] leading-none text-violet11 rounded-[3px] flex items-center h-[25px] px-[5px] relative pl-[25px] select-none outline-none data-[disabled]:text-mauve8 data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 cursor-pointer"
+                value="pedro"
+              >
+                Lịch sử đơn hàng
+              </DropdownMenu.RadioItem>
+            </Link>
             <DropdownMenu.RadioItem
-              className="text-[13px] leading-none text-violet11 rounded-[3px] flex items-center h-[25px] px-[5px] relative pl-[25px] select-none outline-none data-[disabled]:text-mauve8 data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1"
-              value="pedro"
+              onClick={Logout}
+              className="text-[13px] leading-none text-violet11 rounded-[3px] flex items-center h-[25px] px-[5px] relative pl-[25px] select-none outline-none data-[disabled]:text-mauve8 data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 cursor-pointer"
             >
-              Pedro Duarte
-            </DropdownMenu.RadioItem>
-            <DropdownMenu.RadioItem
-              className="text-[13px] leading-none text-violet11 rounded-[3px] flex items-center h-[25px] px-[5px] relative pl-[25px] select-none outline-none data-[disabled]:text-mauve8 data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1"
-              value="colm"
-            >
-              Colm Tuite
+              Đăng Xuất
             </DropdownMenu.RadioItem>
           </DropdownMenu.RadioGroup>
 

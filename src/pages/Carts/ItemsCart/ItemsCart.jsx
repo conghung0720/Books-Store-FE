@@ -25,10 +25,10 @@ const ItemsCart = (props) => {
   };
 
   return (
-    <div className="border-blue-600 border-2 p-2 w-[95%] rounded-lg m-auto flex">
+    <div className="p-2 w-[95%] rounded-lg m-auto flex shadow-lg">
       <img src={props.image} className=" h-[120px] w-[120px]" />
       <div className="w-[78%] flex">
-        <div className="border-rose-600 border-2 w-[70%]">
+        <div className=" w-[70%] text-center">
           <span>{props.title}</span>
         </div>
         <div className="w-[22%] flex justify-center flex-wrap">
@@ -43,12 +43,11 @@ const ItemsCart = (props) => {
             <input
               value={props.value}
               type="text"
-              className="h-full w-[50%] focus:outline-none text-center"
+              className="h-full bg-cart w-[50%] focus:outline-none text-center"
             />
             <button
               className="flex justify-center items-center w-[25%] "
               disabled={selectedItem && props.value >= selectedItem.quantity}
-
               onClick={handleAdd}
             >
               <PlusIcon className="h-5 w-5" />

@@ -39,6 +39,25 @@ export const apiSlice = createApi({
     getListCart: builder.query({
       query: (id) => `carts/${id}`,
     }),
+    postOrderDetails: builder.mutation({
+      query: (path) => ({
+        url: `orders-detail/`,
+        method: "POST",
+        body: path,
+      }),
+    }),
+    getDeleteItemsCart: builder.query({
+      query: (id) => `carts/delete/${id}`,
+    }),
+    getListOrderUser: builder.query({
+      query: (idUser) => `orders-detail/user/${idUser}`,
+    }),
+    getOrderDetailsById: builder.query({
+      query: (id) => `orders-detail/${id}`,
+    }),
+    getProfile: builder.query({
+      query: () => "auth/profile",
+    }),
   }),
 });
 
@@ -46,8 +65,13 @@ export const {
   useGetRegisterMutation,
   useGetLoginMutation,
   useGetAllBooksQuery,
+  useGetDeleteItemsCartQuery,
   useGetChatGptMutation,
   useGetListFlashSaleQuery,
   useGetIdBooksQuery,
-  useGetListCartQuery
+  useGetListCartQuery,
+  usePostOrderDetailsMutation,
+  useGetListOrderUserQuery,
+  useGetOrderDetailsByIdQuery,
+  useGetProfileQuery,
 } = apiSlice;

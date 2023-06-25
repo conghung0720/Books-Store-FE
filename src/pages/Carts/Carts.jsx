@@ -4,6 +4,8 @@ import Headers from "../../components/Header/Headers";
 import { useGetListCartQuery } from "../../api/api";
 import ItemsCart from "./ItemsCart/ItemsCart";
 import api from "../../utils/jwtInterceptor";
+import { Link } from "react-router-dom";
+import BookCart from "../../img/BookCart.jpg";
 
 const Carts = (props) => {
   const idCart = JSON.parse(localStorage.getItem("idCart"));
@@ -13,6 +15,7 @@ const Carts = (props) => {
   const [itemsBooks, setItemBooks] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const [itemQuantities, setItemQuantities] = useState({});
+  const [fullPrice, setFullPrice] = useState(0);
 
   const handleSubtract = (itemId) => {
     const updatedCartItems = cartItems.map((item) => {
@@ -51,7 +54,7 @@ const Carts = (props) => {
       if (item._id === itemId) {
         const updatedQuantity = item.quantity + 1;
         if (selectedItem && updatedQuantity > selectedItem.quantity) {
-          // Nếu plus lớn hơn quantity của item, không thay đổi quantity
+        
           return item;
         }
         return {
@@ -101,13 +104,14 @@ const Carts = (props) => {
 
   useEffect(() => {
     updateCartItems();
+    setFullPrice(cartData?.fullPrice);
   }, [cartItems]);
 
   return (
     <>
       <Headers />
-      <main className="flex p-[3%] h-screen">
-        <div className="border-red-600 border-2 w-[60%] py-[1%]">
+      <main className="flex bg-cart p-[3%] h-screen">
+        <div className="w-[60%] py-[1%] space-y-5">
           {cartSuccess && cartItems.length > 0 ? (
             cartItems.map((item) => (
               <ItemsCart
@@ -124,10 +128,38 @@ const Carts = (props) => {
               />
             ))
           ) : (
-            <p>No items in cart</p>
+            <p>Không có đơn hàng trong giỏ hàng</p>
           )}
         </div>
-        <div className="border-red-600 border-2 w-[40%]">s</div>
+        <div className="w-[40%] rounded-xl p-3 shadow-2xl">
+          <div>
+            <img
+              src={BookCart}
+              className="w-[100%] h-[300px] object-cover rounded-lg"
+            />
+          </div>
+          <div className=" h-[30%] mt-[5%] flex">
+            <div className=" w-[50%]">
+              <ul className="space-y-1">
+                <li>Tiền sản phẩm</li>
+                <li>Phí ship</li>
+                <li>Tổng tiền</li>
+              </ul>
+            </div>
+            <div className=" w-[50%] ">
+              <ul className="absolute right-[5%]">
+                <li>{fullPrice?.toFixed(3)} VNĐ</li>
+                <li>32.000 VNĐ</li>
+                <li>{(fullPrice + 32)?.toFixed(3)} VNĐ</li>
+              </ul>
+            </div>
+          </div>
+          <Link to="/onestepcheckout">
+            <button className=" w-full h-[10%] mt-3 rounded-2xl bg-rose-600">
+              Thanh Toán
+            </button>
+          </Link>
+        </div>
       </main>
     </>
   );

@@ -28,7 +28,10 @@ const Login = () => {
         userName: "hungdc03",
         password: "123",
       })
-      .then((res) => localStorage.setItem("jwt", res.data.access_token))
+      .then((res) => {
+        localStorage.setItem("jwt", res.data.access_token);
+        window.location.href = '/'
+      })
       .catch((err) => console.log(err));
   };
 

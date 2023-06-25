@@ -19,7 +19,6 @@ const Home = () => {
   const getData = useSelector((state) => state.cart);
 
   const getItemCart = useSelector((state) => state.cart);
-  console.log(getItemCart);
 
   useEffect(() => {
     api
@@ -51,7 +50,7 @@ const Home = () => {
   }, [data, isSuccess, isLoading]);
 
   const displayChatBot = () => {
-    setDisplayChatBot(!displayChatBot);
+    setDisplayChatBot(!isDisplayChatBot);
   };
 
   return (
@@ -60,13 +59,13 @@ const Home = () => {
         <img
           className="rounded-[50%] fixed right-10 bottom-5 h-[70px] w-[70px] cursor-pointer"
           src={AvatarBot}
-          onClick={() => displayChatBot}
+          onClick={displayChatBot}
         />
-        {
+        {isDisplayChatBot && (
           <div className=" scrollbar-thumb-gray-900 scrollbar-track-gray-100 scrollbar-thin w-[400px] h-[400px] overflow-hidden overflow-y-auto fixed right-5 bottom-20 z-50 bg-slate-300 rounded-lg">
             <ChatBox />
           </div>
-        }
+        )}
         <div className=" m-auto w-[90%]">
           <Headers />
           <AdsBanner />

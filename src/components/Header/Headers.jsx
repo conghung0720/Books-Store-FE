@@ -9,7 +9,6 @@ import {
   HeartIcon,
   ShoppingCartIcon,
 } from "@heroicons/react/24/outline";
-import { UserIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import LogoBanner from "../../img/logo.png";
 import DropdownMenuDemo from "../DropDownMenu/DropDownMenu";
@@ -17,10 +16,14 @@ import api from "../../utils/jwtInterceptor";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../store/features/profileSlice";
 import { useCart } from "../../store/CartProvider";
+import { useGetAllBooksQuery } from "../../api/api";
+
+
 
 const Headers = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const { data: isData } = useGetAllBooksQuery();
   const [isDataProfile, setIsDataProfile] = useState();
   const dispatch = useDispatch();
   const items = useSelector((state) => state);
@@ -30,14 +33,13 @@ const Headers = () => {
       .get("http://localhost:8000/auth/profile")
       .then((res) => {
         setIsDataProfile(res.data);
-        console.log(res.data);
         localStorage.setItem("idCart", JSON.stringify(res.data.cartId));
+        localStorage.setItem("idUser", JSON.stringify(res.data._id));
         dispatch(getUser(res.data));
         setIsSuccess(true);
         setIsLoading(false);
       })
       .catch((err) => {
-        console.log(err);
         setIsLoading(false);
         setIsSuccess(false);
       });
@@ -64,7 +66,7 @@ const Headers = () => {
           <MagnifyingGlassIcon className="h-4 w-4 m-auto" />
         </i>
         <input
-          className="h-[40%] bg-home ml-3 m-auto focus:outline-none"
+          className="h-[40%] ml-3 m-auto focus:outline-none"
           placeholder="Tìm Kiếm"
         />
       </div>
