@@ -56,11 +56,11 @@ const OneStepCheckOut = () => {
       email: email,
       address: address,
       totalPrice: listCart.totalPrice,
-      status: "Đang tiến hành",
+      status: "Đang xử lý",
     });
 
     api
-      .get(`http://localhost:8000/carts/delete/${getIdCart}`)
+      .get(`http://localhost:8080/carts/delete/${getIdCart}`)
       .then((response) => {
         console.log("Success");
       })

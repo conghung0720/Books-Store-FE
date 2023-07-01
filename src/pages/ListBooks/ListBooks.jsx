@@ -8,8 +8,6 @@ function ListBooks() {
     { id: 2, name: "Khoa học" },
     { id: 3, name: "Lịch sử" },
   ];
-
-
   return (
     <div className="bg-gray-100 min-h-screen px-[5%]">
       <div className="container mx-auto py-8">

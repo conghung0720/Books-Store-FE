@@ -75,7 +75,7 @@ function HistoryOrders() {
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {order.totalPrice?.toFixed(3)}
+                    {order.fullPrice?.toFixed(3)}VND
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <button

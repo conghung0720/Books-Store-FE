@@ -14,27 +14,21 @@ const FormBuy = ({ data }) => {
   const dispatch = useDispatch();
   const [isItems, setIsItems] = useState([]);
   const valueItemToCart = useSelector((state) => state.countValue.valueItem);
+  const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
 
+  const handleQuantityChange = (event) => {
+    const newQuantity = parseInt(event.target.value);
+    setQuantity(newQuantity);
+  };
+
   const addItemToCart = () => {
-    if (valueItemToCart > data.quantity) {
+    if (quantity > data.quantity) {
       alert("");
+      return;
     }
     dispatch(addItems({ Test: "test" }));
-    addToCart(data);
-
-    // const changeQuantityItemExist = isItems?.filter((value) => {
-    //   if (value._id === data._id) {
-    //     value.quantity += valueItemToCart;
-    //     return {
-    //       quantity: +value.quantity,
-    //       ...value,
-    //     };
-    //   }
-    // });
-
-    // if (changeQuantityItemExist.length > 0) setIsItems(changeQuantityItemExist);
-    // else setIsItems([...isItems, { ...data, quantity: +valueItemToCart }]);
+    addToCart({ ...data, quantity: +quantity });
   };
 
   return (
@@ -76,24 +70,38 @@ const FormBuy = ({ data }) => {
               <h1 className="text-red-600 font-bold text-[30px] mt-3">
                 {value.price.toFixed(3)} đ
               </h1>
-              <div className="flex items-center mt-4">
-                <h1 className="mr-[4%] text-medium text-[17px] font-semibold">
-                  Số lượng:{" "}
-                </h1>
-                <InputQuantity quantity={value.quantity} />
-              </div>
-              <div className="flex space-x-6">
-                <ButtonMediumWeight className="bg-rose-600 text-white mt-[6%]">
-                  Mua ngay
-                </ButtonMediumWeight>
-                <ButtonMediumWeight
-                  onClick={addItemToCart}
-                  className=" text-rose-600 mt-[6%] flex"
-                >
-                  <ShoppingCartIcon className="h-5 w-5 mr-4" />
-                  Thêm vào giỏ hàng
-                </ButtonMediumWeight>
-              </div>
+              {value.quantity > 0 && (
+                <div className="flex items-center mt-4">
+                  <h1 className="mr-[4%] text-medium text-[17px] font-semibold">
+                    Số lượng:{" "}
+                  </h1>
+                  <input
+                    type="number"
+                    min="0"
+                    className="w-16 px-3 py-1 text-center border border-gray-300 focus:outline-none"
+                    value={quantity}
+                    onChange={handleQuantityChange}
+                  />{" "}
+                </div>
+              )}
+              {value.quantity > 0 ? (
+                <div className="flex space-x-6">
+                  <ButtonMediumWeight className="bg-rose-600 text-white mt-[6%]">
+                    Mua ngay
+                  </ButtonMediumWeight>
+                  <ButtonMediumWeight
+                    onClick={addItemToCart}
+                    className=" text-rose-600 mt-[6%] flex"
+                  >
+                    <ShoppingCartIcon className="h-5 w-5 mr-4" />
+                    Thêm vào giỏ hàng
+                  </ButtonMediumWeight>
+                </div>
+              ) : (
+                <div className="mt-5 border-red-600 border-2 p-2 bg-rose-600 w-[80%] rounded-lg text-white text-[20px]">
+                  Hết hàng
+                </div>
+              )}
             </div>
           </>
         );

@@ -4,7 +4,7 @@ import api from "../utils/jwtInterceptor";
 
 export const apiSlice = createApi({
   reducerPath: "register",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8000/" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8080/" }),
   endpoints: (builder) => ({
     getRegister: builder.mutation({
       query: (path) => ({
@@ -46,11 +46,28 @@ export const apiSlice = createApi({
         body: path,
       }),
     }),
+    postComment: builder.mutation({
+      query: (path) => ({
+        url: `comments/`,
+        method: "POST",
+        body: path,
+      }),
+    }),
+    postBooks: builder.mutation({
+      query: (path) => ({
+        url: `comments/`,
+        method: "POST",
+        body: path,
+      }),
+    }),
     getDeleteItemsCart: builder.query({
       query: (id) => `carts/delete/${id}`,
     }),
     getListOrderUser: builder.query({
       query: (idUser) => `orders-detail/user/${idUser}`,
+    }),
+    getListManageOrder: builder.query({
+      query: () => `orders-detail/list`,
     }),
     getOrderDetailsById: builder.query({
       query: (id) => `orders-detail/${id}`,
@@ -58,11 +75,31 @@ export const apiSlice = createApi({
     getProfile: builder.query({
       query: () => "auth/profile",
     }),
+    getProcessStatus: builder.query({
+      query: (id) => `orders-detail/process/${id}`,
+    }),
+    getAcceptStatus: builder.query({
+      query: (id) => `orders-detail/accept/${id}`,
+    }),
+    getCancelStatus: builder.query({
+      query: (id) => `orders-detail/cancel/${id}`,
+    }),
+    getCommentsOfBook: builder.query({
+      query: (id) => `comments/${id}`,
+    }),
+    getAllUser: builder.query({
+      query: () => `user/all-user`,
+    }),
+    getUserId: builder.query({
+      query: (idUser) => `user/user/${idUser}`
+    })
   }),
 });
 
 export const {
   useGetRegisterMutation,
+  useGetAllUserQuery,
+  useGetUserIdQuery,
   useGetLoginMutation,
   useGetAllBooksQuery,
   useGetDeleteItemsCartQuery,
@@ -74,4 +111,10 @@ export const {
   useGetListOrderUserQuery,
   useGetOrderDetailsByIdQuery,
   useGetProfileQuery,
+  useGetAcceptStatusQuery,
+  useGetCancelStatusQuery,
+  useGetProcessStatusQuery,
+  usePostCommentMutation,
+  useGetCommentsOfBookQuery,
+  useGetListManageOrderQuery
 } = apiSlice;

@@ -18,8 +18,6 @@ import { getUser } from "../../store/features/profileSlice";
 import { useCart } from "../../store/CartProvider";
 import { useGetAllBooksQuery } from "../../api/api";
 
-
-
 const Headers = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -30,11 +28,12 @@ const Headers = () => {
   const [numberItems, setNumberItems] = useState(1);
   useEffect(() => {
     api
-      .get("http://localhost:8000/auth/profile")
+      .get("http://localhost:8080/auth/profile")
       .then((res) => {
         setIsDataProfile(res.data);
         localStorage.setItem("idCart", JSON.stringify(res.data.cartId));
         localStorage.setItem("idUser", JSON.stringify(res.data._id));
+        localStorage.setItem("roles", JSON.stringify(res.data.roles.at(0)));
         dispatch(getUser(res.data));
         setIsSuccess(true);
         setIsLoading(false);
@@ -80,7 +79,7 @@ const Headers = () => {
           </Link>
         </li>
         <span>1 SP</span>
-        <li>{<DropdownMenuDemo />}</li>
+        <li>{<DropdownMenuDemo avatar={isDataProfile?.avatar} />}</li>
       </ul>
     </header>
   );

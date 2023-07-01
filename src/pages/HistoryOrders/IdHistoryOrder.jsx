@@ -2,10 +2,15 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { useGetOrderDetailsByIdQuery } from "../../api/api";
 import { convertDate } from "../../utils/convertDate";
+import api from "../../utils/jwtInterceptor";
 
 function IdHistoryOrders() {
   const { id } = useParams();
   const { data: orderDetails, isSuccess } = useGetOrderDetailsByIdQuery(id);
+
+  const handleSuccessClick = async (orderId) => {
+    await api.get(`http://localhost:8080/orders-detail/success/${orderId}`);
+  };
 
   return (
     isSuccess && (
@@ -54,7 +59,7 @@ function IdHistoryOrders() {
                               {item.title}
                             </h3>
                             <p className="text-gray-600">
-                              Giá: ${item.price?.toFixed(2)}
+                              Giá: {item.price?.toFixed(3)}VND
                             </p>
                             <p className="text-gray-600">
                               Số lượng: {item.quantity}
@@ -69,8 +74,16 @@ function IdHistoryOrders() {
               <div>
                 <h2 className="text-xl font-semibold mb-2">Tổng tiền</h2>
                 <p className="text-gray-600">
-                  Tổng tiền: {orderDetails.totalPrice?.toFixed(2)} VND
+                  Tổng tiền: {orderDetails.fullPrice?.toFixed(2)} VND
                 </p>
+              </div>
+              <div className="flex justify-end mt-6">
+                <button
+                  onClick={() => handleSuccessClick(orderDetails._id)}
+                  className="bg-rose-600 hover:bg-rose-500 text-white py-2 px-4 rounded"
+                >
+                  Đã nhận
+                </button>
               </div>
             </div>
           }

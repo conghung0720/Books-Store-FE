@@ -17,11 +17,24 @@ const Carts = (props) => {
   const [itemQuantities, setItemQuantities] = useState({});
   const [fullPrice, setFullPrice] = useState(0);
 
+  const deleteItemsCart = async (itemId) => {
+    api
+      .delete(`http://localhost:8080/carts/${idCart}/items/${itemId}`)
+      .then((response) => {
+        console.log(response.data);
+        setFullPrice(response.data.fullPrice);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   const handleSubtract = (itemId) => {
     const updatedCartItems = cartItems.map((item) => {
       if (item._id === itemId) {
         const updatedQuantity = item.quantity - 1;
         if (updatedQuantity <= 0) {
+          deleteItemsCart(item._id);
           return null;
         }
         return {
@@ -38,11 +51,13 @@ const Carts = (props) => {
 
   const handleDelete = (itemId) => {
     const updatedCartItems = cartItems.filter((item) => item._id !== itemId);
+    deleteItemsCart(itemId);
     setCartItems(updatedCartItems);
   };
+
   const handleAdd = async (itemId) => {
     try {
-      const apiURL = `http://localhost:8000/book/${itemId}`;
+      const apiURL = `http://localhost:8080/book/${itemId}`;
       const response = await api.get(apiURL);
       const fetchedItem = response.data;
       setSelectedItem(fetchedItem);
@@ -54,7 +69,6 @@ const Carts = (props) => {
       if (item._id === itemId) {
         const updatedQuantity = item.quantity + 1;
         if (selectedItem && updatedQuantity > selectedItem.quantity) {
-        
           return item;
         }
         return {
@@ -83,9 +97,8 @@ const Carts = (props) => {
 
   const updateCartItems = () => {
     const idCart = JSON.parse(localStorage.getItem("idCart"));
-    console.log(cartItems);
 
-    const apiURL = `http://localhost:8000/carts/${idCart}`;
+    const apiURL = `http://localhost:8080/carts/${idCart}`;
     api
       .post(apiURL, ...cartItems)
       .then((response) => {
@@ -93,6 +106,7 @@ const Carts = (props) => {
           "Danh sách cartItems đã được cập nhật trên máy chủ:",
           response.data
         );
+        setFullPrice(response.data.fullPrice);
       })
       .catch((error) => {
         console.error(
@@ -104,7 +118,6 @@ const Carts = (props) => {
 
   useEffect(() => {
     updateCartItems();
-    setFullPrice(cartData?.fullPrice);
   }, [cartItems]);
 
   return (

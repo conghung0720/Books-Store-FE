@@ -21,20 +21,25 @@ const Login = () => {
   const navigate = useNavigate();
 
   const submitValue = async () => {
-    const userName = document.getElementById("userName").value;
-    const password = document.getElementById("password").value;
-    const response = await axios
-      .post("http://localhost:8000/auth/login", {
-        userName: "hungdc03",
-        password: "123",
+    await axios
+      .post("http://localhost:8080/auth/login", {
+        userName: valueInputForm.userName,
+        password: valueInputForm.password,
       })
       .then((res) => {
         localStorage.setItem("jwt", res.data.access_token);
-        window.location.href = '/'
+        window.location.href = "/";
       })
       .catch((err) => console.log(err));
   };
-
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    console.log(name);
+    setValueInputForm((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
   useEffect(() => {
     const cookieValue = document.cookie;
     if (localStorage.getItem("jwt")) navigate("/");
@@ -57,14 +62,31 @@ const Login = () => {
               />
             </div>
             <div className="h-[50%]">
-              <FormInputLogin id="userName" TextForm={"Tên đăng nhập"} />
-              <FormInputLogin
+              <label className="flex-block text-[14px] font-medium inter">
+                Tên đăng nhập
+              </label>
+              <input
+                onChange={handleInputChange}
+                id="userName"
+                TextForm={"Tên đăng nhập"}
+                name="userName"
+                // value={valueInputForm.userName}
+                className="rouned-lg h-[45px] w-[565px] text-[14px] font-medium color-input-login focus:outline-none px-[5%] "
+              />
+              <label className="flex-block text-[14px] font-medium inter border-2">
+                Mật khẩu
+              </label>
+              <input
+                onChange={handleInputChange}
                 minLength={"6"}
                 min={6}
                 max={50}
                 id="password"
                 type="password"
+                name="password"
                 TextForm={"Password"}
+                // value={valueInputForm.password}
+                className="rouned-lg h-[45px] w-[565px] text-[14px] font-medium color-input-login focus:outline-none px-[5%] "
               />
 
               <div className="py-[10%]">

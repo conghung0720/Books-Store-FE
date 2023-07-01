@@ -39,7 +39,7 @@ const DropdownMenuDemo = (props) => {
             onCheckedChange={setUrlsChecked}
           >
             <img
-              src="https://simpleicon.com/wp-content/uploads/user1.png"
+              src={props.avatar}
               className="h-[30px] w-[30px] rounded-[50%]"
             />
             <span className="ml-3">{profile.infoUser.fullName}</span>

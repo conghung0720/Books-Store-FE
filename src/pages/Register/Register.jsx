@@ -32,6 +32,7 @@ const Register = () => {
         id,
         fullName: valueFullName,
         userName: valueUserName,
+        roles: ["Guest"],
         password: valuePassword,
       });
     } catch (err) {

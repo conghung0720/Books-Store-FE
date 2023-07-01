@@ -29,18 +29,20 @@ export const CartProvider = ({ children }) => {
 
     if (existingItem) {
       const updatedItems = cartItems.map((item) =>
-        item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        item.id === product.id
+          ? { ...item, quantity: item.quantity + +product.quantity }
+          : product
       );
       setCartItems(updatedItems);
     } else {
-      setCartItems([...cartItems, { ...product, quantity: 1 }]);
+      setCartItems([...cartItems, { ...product, quantity: +product.quantity }]);
     }
   };
-  const idCart = useSelector((state) => state.profile);
+  console.log(cartItems);
 
   useEffect(() => {
     const idCart = JSON.parse(localStorage.getItem("idCart"));
-    const apiURL = `http://localhost:8000/carts/${idCart}`;
+    const apiURL = `http://localhost:8080/carts/${idCart}`;
     isSuccessCart &&
       api
         .post(apiURL, ...cartItems)

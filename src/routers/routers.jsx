@@ -17,11 +17,31 @@ import UserProfile from "../pages/Info/Info";
 import HistoryOrders from "../pages/HistoryOrders/HistoryOrders";
 import IdHistoryOrders from "../pages/HistoryOrders/IdHistoryOrder";
 import ListBooks from "../pages/ListBooks/ListBooks";
+import AddBookForm from "../pages/Staff/AddBooks";
+import ManageUsers from "../pages/Info/ManageUser/ManageUser";
+import UserCard from "../pages/Info/ManageUser/CardUser";
+import ManageOrder from "../pages/ManageOrder/ManageOrder";
+import ProtectedRoute from "./ProtectedRouter";
 
+const userRole = () => {
+  const userRole = localStorage.getItem("roles");
+  return userRole ? userRole : "";
+};
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
+  },
+  {
+    path: "/manage-order",
+    element: (
+      <ProtectedRoute
+        path="/manage-order"
+        element={<ManageOrder />}
+        allowedRoles={[`"Admin"`]}
+        userRole={`${userRole()}`}
+      />
+    ),
   },
   {
     path: "/flashsale",
@@ -73,8 +93,20 @@ const router = createBrowserRouter([
   },
   {
     path: "/listbooks",
-    element: <ListBooks/>
-  }
+    element: <ListBooks />,
+  },
+  {
+    path: "/addbooks",
+    element: <AddBookForm />,
+  },
+  {
+    path: "/manage-users",
+    element: <ManageUsers />,
+  },
+  {
+    path: "/user/:idUser",
+    element: <UserCard />,
+  },
 ]);
 
 export default router;

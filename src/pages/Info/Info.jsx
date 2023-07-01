@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Headers from "../../components/Header/Headers";
 import { useGetProfileQuery } from "../../api/api";
 import api from "../../utils/jwtInterceptor";
+import ImageCompressor from "image-compressor";
 
 export const roleColors = {
   Admin: "text-red-500",
@@ -29,7 +30,7 @@ const UserProfile = () => {
   const updateUser = async (id, updatedFields) => {
     try {
       const response = await api.put(
-        `http://localhost:8000/user/${id}`,
+        `http://localhost:8080/user/${id}`,
         updatedFields
       );
       return response.data;
@@ -50,12 +51,14 @@ const UserProfile = () => {
       });
     setEditMode(false);
   };
-  const handleAvatarChange = (e) => {
+  const handleAvatarChange = async (e) => {
     const file = e.target.files[0];
+
     const reader = new FileReader();
 
     reader.onloadend = () => {
       setAvatarFile(reader.result);
+      //Choose image large
       setUpdatedUser({ ...updatedUser, avatar: reader.result });
     };
 
@@ -66,7 +69,7 @@ const UserProfile = () => {
 
   useEffect(() => {
     api
-      .get("http://localhost:8000/auth/profile")
+      .get("http://localhost:8080/auth/profile")
       .then((res) => {
         setIsDataProfile(res.data);
         setUpdatedUser({ ...res.data });
@@ -95,7 +98,7 @@ const UserProfile = () => {
           <h3 className="text-lg font-semibold">User Information</h3>
           <div className="grid grid-cols-2 gap-4 mt-4">
             <div>
-              <label className="text-gray-700">Username</label>
+              <label className="text-gray-700">Tài khoản</label>
               {editMode ? (
                 <input
                   type="text"
@@ -109,7 +112,7 @@ const UserProfile = () => {
               )}
             </div>
             <div>
-              <label className="text-gray-700">Sex</label>
+              <label className="text-gray-700">Giới tính</label>
               {editMode ? (
                 <input
                   type="text"
@@ -124,11 +127,7 @@ const UserProfile = () => {
             </div>
             <div>
               <label className="text-gray-700">Roles</label>
-              <p
-                className={`${
-                  roleColors[updatedUser.roles?.at(0)]
-                }`}
-              >
+              <p className={`${roleColors[updatedUser.roles?.at(0)]}`}>
                 {updatedUser.roles?.at(0)}
               </p>
             </div>

@@ -8,6 +8,7 @@ const FormInputAuth = (props) => {
       </label>
       <div className="flex-block">
         <input
+          onChange={props.onChange}
           minLength={props.minLength}
           min={props.min}
           max={props.max}
