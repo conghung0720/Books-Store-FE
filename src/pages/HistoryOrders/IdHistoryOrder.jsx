@@ -74,16 +74,18 @@ function IdHistoryOrders() {
               <div>
                 <h2 className="text-xl font-semibold mb-2">Tổng tiền</h2>
                 <p className="text-gray-600">
-                  Tổng tiền: {orderDetails.fullPrice?.toFixed(2)} VND
+                  Tổng tiền: {orderDetails.fullPrice?.toFixed(3)} VND
                 </p>
               </div>
               <div className="flex justify-end mt-6">
-                <button
-                  onClick={() => handleSuccessClick(orderDetails._id)}
-                  className="bg-rose-600 hover:bg-rose-500 text-white py-2 px-4 rounded"
-                >
-                  Đã nhận
-                </button>
+                {orderDetails.status === "Chấp nhận" && (
+                  <button
+                    onClick={() => handleSuccessClick(orderDetails._id)}
+                    className="bg-rose-600 hover:bg-rose-500 text-white py-2 px-4 rounded"
+                  >
+                    Đã nhận
+                  </button>
+                )}
               </div>
             </div>
           }

@@ -85,7 +85,6 @@ const ManageUsers = () => {
             <th className="border-b border-gray-300 py-2 px-4">ID</th>
             <th className="border-b border-gray-300 py-2 px-4">Tên</th>
             <th className="border-b border-gray-300 py-2 px-4">Chi tiết</th>
-            <th className="border-b border-gray-300 py-2 px-4">Xử lý</th>
           </tr>
         </thead>
         <tbody>
@@ -96,10 +95,10 @@ const ManageUsers = () => {
                 <td className="border-b border-gray-300 py-2 px-4">
                   {user.fullName}
                 </td>
-                <td className="border-b border-gray-300 py-2 px-4">
-                  <Link to={`/user/${user._id}`}>Chi Tiết</Link>
+                <td className="border-b border-gray-300 py-2 px-4 text-blue-400">
+                  <Link to={`/user/${user._id}`}>Xem Chi Tiết</Link>
                 </td>
-                <td className="border-b border-gray-300 py-2 px-4">
+                {/* <td className="border-b border-gray-300 py-2 px-4">
                   <button
                     onClick={() => handleEditUser(user.id)}
                     className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded mr-2"
@@ -112,7 +111,7 @@ const ManageUsers = () => {
                   >
                     Delete
                   </button>
-                </td>
+                </td> */}
               </tr>
             ))}
         </tbody>

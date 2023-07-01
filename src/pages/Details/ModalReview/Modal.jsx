@@ -5,6 +5,9 @@ import { LockClosedIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
 import RatingStar from "../../../utils/ratingStar";
 import api from "../../../utils/jwtInterceptor";
 import { useParams } from "react-router-dom";
+import * as AlertDialog from "@radix-ui/react-alert-dialog";
+
+const wait = () => new Promise((resolve) => setTimeout(resolve, 1000));
 
 const Modal = () => {
   const [comment, setComment] = useState("");
@@ -21,7 +24,7 @@ const Modal = () => {
           comments: comment,
         })
         .then((res) => console.log(res))
-        .catch((err) => alert("Bạn chưa mua sản phẩm này"));
+        .catch((err) => alert("Bạn chưa mua sách này"));
     } catch (error) {
       console.error(error); // Handle error if needed
     }
