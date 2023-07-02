@@ -3,6 +3,8 @@ import Autocomplete from "react-autocomplete";
 import DisplayListBooks from "../../components/DisplayListBooks/DisplayListBooks";
 import { useGetAllBooksQuery } from "../../api/api";
 import { Link } from "react-router-dom";
+import Category from "../../components/Category/Category";
+import Headers from "../../components/Header/Headers";
 
 const Search = () => {
   const { data: isData, isSuccess } = useGetAllBooksQuery();
@@ -28,50 +30,11 @@ const Search = () => {
 
   return (
     <>
-      <div>
-        <Autocomplete
-          getItemValue={(item) => item.title}
-          items={getFilteredBooks()}
-          renderItem={(item, isHighlighted) => (
-            <div
-              key={item._id}
-              className={`p-2 ${isHighlighted ? "bg-blue-200" : ""}`}
-            >
-              {item.title}
-            </div>
-          )}
-          value={searchTerm}
-          onChange={handleSearch}
-          renderInput={(props) => (
-            <div className="flex items-center justify-center">
-              <Autocomplete
-                getItemValue={(item) => item.title}
-                items={getFilteredBooks()}
-                renderItem={(item, isHighlighted) => (
-                  <Link to={`/details/${item._id}`}>
-                    <div
-                      key={item._id}
-                      className={`p-2 ${isHighlighted ? "bg-blue-200" : ""}`}
-                    >
-                      {item.title}
-                    </div>
-                  </Link>
-                )}
-                value={searchTerm}
-                onChange={handleSearch}
-                renderInput={(props) => (
-                  <input
-                    {...props}
-                    className="w-[300px] h-[50px] px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                  />
-                )}
-              />
-            </div>
-          )}
-        />
-
+      <Headers />
+      <main className="px-[3%]">
+        {isSuccess && <Category data={isData} />}
         {isSuccess && <DisplayListBooks displayNumRowBooks={3} data={isData} />}
-      </div>
+      </main>
     </>
   );
 };

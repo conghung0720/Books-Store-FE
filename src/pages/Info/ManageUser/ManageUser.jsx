@@ -79,43 +79,53 @@ const ManageUsers = () => {
           </button>
         )}
       </div>
-      <table className="w-full">
-        <thead>
-          <tr>
-            <th className="border-b border-gray-300 py-2 px-4">ID</th>
-            <th className="border-b border-gray-300 py-2 px-4">Tên</th>
-            <th className="border-b border-gray-300 py-2 px-4">Chi tiết</th>
-          </tr>
-        </thead>
-        <tbody>
-          {isSuccess &&
-            data.map((user) => (
-              <tr key={user._id}>
-                <td className="border-b border-gray-300 py-2">{user._id}</td>
-                <td className="border-b border-gray-300 py-2 px-4">
-                  {user.fullName}
-                </td>
-                <td className="border-b border-gray-300 py-2 px-4 text-blue-400">
-                  <Link to={`/user/${user._id}`}>Xem Chi Tiết</Link>
-                </td>
-                {/* <td className="border-b border-gray-300 py-2 px-4">
-                  <button
-                    onClick={() => handleEditUser(user.id)}
-                    className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded mr-2"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDeleteUser(user.id)}
-                    className="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded"
-                  >
-                    Delete
-                  </button>
-                </td> */}
-              </tr>
-            ))}
-        </tbody>
-      </table>
+      <div className="bg-white rounded-lg shadow">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                ID
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Tên
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Chi tiết
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {isSuccess &&
+              data.map((user) => (
+                <tr key={user._id}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {user._id}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {user.fullName}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <Link
+                      to={`/user/${user._id}`}
+                      className="text-blue-500 hover:text-blue-700"
+                    >
+                      Xem Chi Tiết
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

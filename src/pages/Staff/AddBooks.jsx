@@ -7,6 +7,8 @@ import {
   isNumber,
 } from "class-validator";
 import api from "../../utils/jwtInterceptor";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function convertToBase64(file) {
   return new Promise((resolve, reject) => {
@@ -37,6 +39,7 @@ const AddBookForm = () => {
   });
 
   const [imageUrl, setImageUrl] = useState("");
+  const [successAlertOpen, setSuccessAlertOpen] = useState(false);
 
   const handleChange = async (e) => {
     const { name, value, files } = e.target;
@@ -63,11 +66,35 @@ const AddBookForm = () => {
     const validationResult = await validateBookData(bookData);
     if (validationResult.isValid) {
       try {
-        console.log(bookData);
         const response = await api.post(
           "http://localhost:8080/book/add",
           bookData
         );
+        setSuccessAlertOpen(true);
+        setBookData({
+          // category: "",
+          // flashSale: "",
+          author: "",
+          title: "",
+          images: [],
+          price: 0,
+          quantity: 0,
+          buyQuantity: 0,
+          publisher: "",
+          supplier: "",
+          imageFile: null,
+        });
+
+        setImageUrl("");
+        toast.success("Thêm sách thành công!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       } catch (error) {
         console.error(error);
       }
@@ -250,6 +277,7 @@ const AddBookForm = () => {
           </button>
         </div>
       </form>
+      <ToastContainer />
     </div>
   );
 };

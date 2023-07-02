@@ -7,7 +7,7 @@ import ImageCompressor from "image-compressor";
 export const roleColors = {
   Admin: "text-red-500",
   user: "text-green-500",
-  accounting: "text-blue-500",
+  "Kế toán": "text-blue-500 font-bold",
 };
 
 const UserProfile = () => {

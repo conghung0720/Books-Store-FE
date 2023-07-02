@@ -91,12 +91,16 @@ export const apiSlice = createApi({
       query: () => `user/all-user`,
     }),
     getUserId: builder.query({
-      query: (idUser) => `user/user/${idUser}`
-    })
+      query: (idUser) => `user/user/${idUser}`,
+    }),
+    getAllCategory: builder.query({
+      query: () => `category`,
+    }),
   }),
 });
 
 export const {
+  useGetAllCategoryQuery,
   useGetRegisterMutation,
   useGetAllUserQuery,
   useGetUserIdQuery,
@@ -116,5 +120,5 @@ export const {
   useGetProcessStatusQuery,
   usePostCommentMutation,
   useGetCommentsOfBookQuery,
-  useGetListManageOrderQuery
+  useGetListManageOrderQuery,
 } = apiSlice;

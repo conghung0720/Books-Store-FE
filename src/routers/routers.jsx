@@ -22,6 +22,9 @@ import ManageUsers from "../pages/Info/ManageUser/ManageUser";
 import UserCard from "../pages/Info/ManageUser/CardUser";
 import ManageOrder from "../pages/ManageOrder/ManageOrder";
 import ProtectedRoute from "./ProtectedRouter";
+import CategoryManagement from "../pages/ManageCategory/ManageCategory";
+import AdminDashboard from "../pages/Staff/StaffDashboard";
+import OrderDetails from "../pages/ManageOrderUser";
 
 const userRole = () => {
   const userRole = localStorage.getItem("roles");
@@ -97,7 +100,14 @@ const router = createBrowserRouter([
   },
   {
     path: "/addbooks",
-    element: <AddBookForm />,
+    element: (
+      <ProtectedRoute
+        path="/manage-order"
+        element={<AddBookForm />}
+        allowedRoles={[`"Admin"`, `"Quản lý kho"`]}
+        userRole={`${userRole()}`}
+      />
+    ),
   },
   {
     path: "/manage-users",
@@ -106,6 +116,19 @@ const router = createBrowserRouter([
   {
     path: "/user/:idUser",
     element: <UserCard />,
+  },
+
+  {
+    path: "/manage-category",
+    element: <CategoryManagement />,
+  },
+  {
+    path: "/staff/",
+    element: <AdminDashboard />,
+  },
+  {
+    path: "/test",
+    element: <OrderDetails />,
   },
 ]);
 

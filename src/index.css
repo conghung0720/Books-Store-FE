@@ -54,6 +54,12 @@ code {
   background-color: #4d2900;
 }
 
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .bg-home {
   background: #fffaf5;
 }

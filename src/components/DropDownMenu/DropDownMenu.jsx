@@ -24,7 +24,7 @@ const DropdownMenuDemo = (props) => {
           className="inline-flex items-center justify-center  outline-none hover:bg-violet3 focus:shadow-[0_0_0_2px] focus:shadow-black"
           aria-label="Customise options"
         >
-          <ChevronDownIcon className="h-6 w-6 cursor-pointer" />
+          <img src={props.avatar} className="h-[30px] w-[30px] rounded-[50%]" />
         </button>
       </DropdownMenu.Trigger>
 
