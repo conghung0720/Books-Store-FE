@@ -1,18 +1,12 @@
 import React, { useState } from "react";
 import Autocomplete from "react-autocomplete";
-
-const categories = [
-  "All",
-  "Books",
-  "Electronics",
-  "Fashion",
-  "Home & Garden",
-  "Sports & Outdoors",
-];
+import { Link } from "react-router-dom";
+import { useGetAllCategoryQuery } from "../../api/api";
 
 const Category = ({ data }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [category, setCategory] = useState("All");
+  const [category, setCategory] = useState("Tất cả");
+  const { data: isCategory, isSuccess } = useGetAllCategoryQuery();
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -46,12 +40,14 @@ const Category = ({ data }) => {
               getItemValue={(item) => item.title}
               items={getFilteredBooks()}
               renderItem={(item, isHighlighted) => (
-                <div
-                  key={item._id}
-                  className={`p-2 ${isHighlighted ? "bg-blue-200" : ""}`}
-                >
-                  {item.title}
-                </div>
+                <Link to={`/details/${item._id}`}>
+                  <div
+                    key={item._id}
+                    className={`p-2 ${isHighlighted ? "bg-blue-200" : ""}`}
+                  >
+                    {item.title}
+                  </div>
+                </Link>
               )}
               value={searchTerm}
               onChange={handleSearch}
@@ -69,19 +65,31 @@ const Category = ({ data }) => {
           </div>
         </div>
         <div className="flex items-center space-x-4">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              className={`${
-                category === cat
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-200 text-gray-600"
-              } rounded-lg px-4 py-2 text-sm`}
-              onClick={() => setCategory(cat)}
-            >
-              {cat}
-            </button>
-          ))}
+          <button
+            key="All"
+            className={`${
+              category === "Tất cả"
+                ? "bg-blue-600 text-white"
+                : "bg-gray-200 text-gray-600"
+            } rounded-lg px-4 py-2 text-sm`}
+            onClick={() => setCategory("Tất cả")}
+          >
+            Tất cả
+          </button>
+          {isSuccess &&
+            isCategory.map((cat) => (
+              <button
+                key={cat._id}
+                className={`${
+                  category === cat.name
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-200 text-gray-600"
+                } rounded-lg px-4 py-2 text-sm`}
+                onClick={() => setCategory(cat.name)}
+              >
+                {cat.name}
+              </button>
+            ))}
         </div>
       </div>
     </div>

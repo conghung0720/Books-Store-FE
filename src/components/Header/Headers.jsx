@@ -55,7 +55,9 @@ const Headers = () => {
         <Link to="/">
           <li>Trang Chủ</li>
         </Link>
-        <li>Sản Phẩm</li>
+        <Link to="/search">
+          <li>Sản Phẩm</li>
+        </Link>
         <li>Tác Giả</li>
         <li>Thể Loại</li>
         <li>Liên Hệ</li>

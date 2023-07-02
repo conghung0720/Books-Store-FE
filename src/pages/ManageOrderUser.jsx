@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   MenuIcon,
   SearchIcon,
@@ -7,6 +7,8 @@ import {
 import { useGetListManageOrderQuery } from "../api/api";
 import { convertDate } from "../utils/convertDate";
 import { Link } from "react-router-dom";
+import api from "../utils/jwtInterceptor";
+import ExportExcel from "./Staff/ManageOrder/ExportExcel";
 
 const OrderStatus = (status) => {
   let colorClass = "";
@@ -50,8 +52,48 @@ const OrderStatus = (status) => {
 
 function OrderDetails() {
   const [activeTab, setActiveTab] = useState("Đã nhận");
+  const [isDataOrder, setIsDataOrder] = useState([]);
+  const [dataExports, setDataExports] = useState([]);
   const { data: dataOrder, isSuccess } = useGetListManageOrderQuery();
 
+  const handleStatusAPI = async (status, id) => {
+    return await api.get(`orders-detail/${status}/${id}`).then((res) => {
+      const updateNewStatus = isDataOrder.map((value) => {
+        if (value._id === res.data._id) return res.data;
+        else return value;
+      });
+      setIsDataOrder(updateNewStatus);
+    });
+  };
+
+  const handleDelivery = async (id) => {
+    handleStatusAPI("delivery", id);
+  };
+
+  const handleCancel = async (id) => {
+    handleStatusAPI("cancel", id);
+  };
+
+  const handleAccept = async (id) => {
+    handleStatusAPI("accept", id);
+  };
+
+  useEffect(() => {
+    setIsDataOrder(dataOrder);
+    const dataUpdate = dataOrder
+      ?.map((value) => {
+        if (value.status === "Đã nhận") {
+          return {
+            "Ngày nhận": convertDate(value.updateAt),
+            "Tổng giá": value.fullPrice.toFixed(3),
+          };
+        } else return;
+      })
+      .filter((value) => value !== undefined);
+
+    setDataExports(dataUpdate);
+  }, [dataOrder]);
+  console.log(dataExports);
   return (
     <div className="bg-gray-100 min-h-screen">
       <div className="flex items-center justify-between px-4 py-2 bg-white shadow-sm">
@@ -66,9 +108,7 @@ function OrderDetails() {
             placeholder="Search invoice"
             className="w-40 border-b border-gray-300 focus:outline-none focus:border-blue-500"
           />
-          <button className="px-4 py-2 bg-blue-500 rounded-md text-white hover:bg-blue-600">
-            Xuất excel
-          </button>
+          <ExportExcel data={dataExports} />
         </div>
       </div>
       <div className="px-4 py-6">
@@ -103,6 +143,26 @@ function OrderDetails() {
             }`}
           >
             Đang Giao Hàng
+          </button>
+          <button
+            onClick={() => setActiveTab("Chấp nhận")}
+            className={`px-4 py-2 rounded-md ${
+              activeTab === "Chấp nhận"
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-gray-600"
+            }`}
+          >
+            Chấp nhận
+          </button>
+          <button
+            onClick={() => setActiveTab("Đang xử lý")}
+            className={`px-4 py-2 rounded-md ${
+              activeTab === "Đang xử lý"
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-gray-600"
+            }`}
+          >
+            Đang xử lý
           </button>
           <button
             onClick={() => setActiveTab("Đã hủy")}
@@ -141,7 +201,8 @@ function OrderDetails() {
           </thead>
           <tbody>
             {isSuccess &&
-              [...dataOrder]
+              isDataOrder?.length > 0 &&
+              [...isDataOrder]
                 .filter((order) => {
                   if (activeTab === "Tất cả") return order;
                   if (activeTab === order.status) return order;
@@ -170,9 +231,39 @@ function OrderDetails() {
                     </td>
                     <td>{OrderStatus(order?.status)}</td>
                     <td className="px-4 py-3 flex items-center justify-end">
-                      <button className="px-2 py-1 bg-gray-200 rounded-md text-gray-600 hover:bg-gray-300">
-                        Cập nhật
-                      </button>
+                      {order?.status === "Đang xử lý" && (
+                        <>
+                          <button
+                            onClick={() => handleAccept(order._id)}
+                            className="px-2 py-1 mr-3 bg-gray-200 rounded-md text-gray-600 hover:bg-gray-300"
+                          >
+                            Chấp nhận
+                          </button>
+
+                          <button
+                            onClick={() => handleCancel(order._id)}
+                            className="px-2 py-1 bg-rose-600 rounded-md text-white hover:bg-rose-500"
+                          >
+                            Hủy
+                          </button>
+                        </>
+                      )}
+                      {order?.status === "Chấp nhận" && (
+                        <>
+                          <button
+                            onClick={() => handleDelivery(order._id)}
+                            className="px-2 py-1 mr-3 bg-yellow-200 rounded-md text-gray-600 hover:bg-yellow-300"
+                          >
+                            Giao hàng
+                          </button>
+                          <button
+                            onClick={() => handleCancel(order._id)}
+                            className="px-2 py-1 bg-rose-600 rounded-md text-white hover:bg-rose-500"
+                          >
+                            Hủy
+                          </button>
+                        </>
+                      )}
                     </td>
                   </tr>
                 ))}

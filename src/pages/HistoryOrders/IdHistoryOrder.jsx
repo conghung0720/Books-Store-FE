@@ -1,5 +1,5 @@
-import React from "react";
-import { useParams } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { useGetOrderDetailsByIdQuery } from "../../api/api";
 import { convertDate } from "../../utils/convertDate";
 import api from "../../utils/jwtInterceptor";
@@ -7,9 +7,16 @@ import api from "../../utils/jwtInterceptor";
 function IdHistoryOrders() {
   const { id } = useParams();
   const { data: orderDetails, isSuccess } = useGetOrderDetailsByIdQuery(id);
+  const [tempSuccess, setSuccess] = useState("");
 
   const handleSuccessClick = async (orderId) => {
     await api.get(`http://localhost:8080/orders-detail/success/${orderId}`);
+    setSuccess("Đã nhận");
+  };
+
+  const handleCancelClick = async (orderId) => {
+    await api.get(`http://localhost:8080/orders-detail/cancel/${orderId}`);
+    setSuccess("Đã hủy");
   };
 
   return (
@@ -29,7 +36,7 @@ function IdHistoryOrders() {
                   Ngày đặt hàng: {convertDate(orderDetails.createAt)}
                 </p>
                 <p className="text-gray-600 mb-2">
-                  Trạng thái: {orderDetails.status}
+                  Trạng thái: {tempSuccess || orderDetails.status}
                 </p>
                 <p className="text-gray-600">Địa chỉ: {orderDetails.address}</p>
                 <p className="text-gray-600">
@@ -45,28 +52,30 @@ function IdHistoryOrders() {
                         return null;
                       }
                       return (
-                        <div
-                          key={item._id}
-                          className="bg-gray-200 p-4 rounded-lg flex items-center"
-                        >
-                          <img
-                            src={item.images?.at(0)}
-                            alt={item.title}
-                            className="w-16 h-16 mr-4"
-                          />
-                          <div>
-                            <h3 className="text-lg font-semibold">
-                              {item.title}
-                            </h3>
-                            <p className="text-gray-600">
-                              Giá: {item.price?.toFixed(3)}VND
-                            </p>
-                            <p className="text-gray-600">
-                              Số lượng: {item.quantity}
-                            </p>
-                            <p className="text-gray-600">ID: {item._id}</p>
+                        <Link to={`/details/${item._id}`}>
+                          <div
+                            key={item._id}
+                            className="bg-gray-200 p-4 rounded-lg flex items-center"
+                          >
+                            <img
+                              src={item.images?.at(0)}
+                              alt={item.title}
+                              className="w-16 h-16 mr-4"
+                            />
+                            <div>
+                              <h3 className="text-lg font-semibold">
+                                {item.title}
+                              </h3>
+                              <p className="text-gray-600">
+                                Giá: {item.price?.toFixed(3)}VND
+                              </p>
+                              <p className="text-gray-600">
+                                Số lượng: {item.quantity}
+                              </p>
+                              <p className="text-gray-600">ID: {item._id}</p>
+                            </div>
                           </div>
-                        </div>
+                        </Link>
                       );
                     })}
                 </div>
@@ -78,7 +87,7 @@ function IdHistoryOrders() {
                 </p>
               </div>
               <div className="flex justify-end mt-6">
-                {orderDetails.status === "Chấp nhận" && (
+                {orderDetails.status === "Đang giao hàng" && (
                   <button
                     onClick={() => handleSuccessClick(orderDetails._id)}
                     className="bg-rose-600 hover:bg-rose-500 text-white py-2 px-4 rounded"
@@ -86,6 +95,15 @@ function IdHistoryOrders() {
                     Đã nhận
                   </button>
                 )}
+                {orderDetails.status === "Chấp nhận" ||
+                  (orderDetails.status === "Đang xử lý" && (
+                    <button
+                      onClick={() => handleCancelClick(orderDetails._id)}
+                      className="bg-rose-600 hover:bg-rose-500 text-white py-2 px-4 rounded"
+                    >
+                      Hủy đơn
+                    </button>
+                  ))}
               </div>
             </div>
           }
